@@ -1,0 +1,13 @@
+{
+  "author": "Andy Mora",
+  "dependencies": [],
+  "license": "Free",
+  "name": "andy-sm_fstab",
+  "operatingsystem_support": [],
+  "project_page": "",
+  "requirements": [],
+  "source": "https://git01.viaggiare.intra/puppet/sm_fstab.git",
+  "summary": "fstab Role for managing /etc/fstab",
+  "tags": [],
+  "version": "0.1.0"
+}
