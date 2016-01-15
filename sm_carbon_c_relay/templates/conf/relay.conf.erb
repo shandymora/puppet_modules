@@ -1,0 +1,23 @@
+<%   if scope['sm_carbon_c_relay::cluster_routes'].respond_to?("each") -%>
+<%     scope['sm_carbon_c_relay::cluster_routes'].each do |route| -%>
+cluster <%= route["name"] %>
+    <%= route["type"] %>
+<%  if route["hosts"].respond_to?("each") -%>
+<%    route["hosts"].each do |host| -%>
+      <%= host %>
+<%    end -%>      
+<%  end -%>
+    ;
+<%     end -%>
+<%   end -%>
+
+<%   if scope['sm_carbon_c_relay::cluster_matches'].respond_to?("each") -%>
+<%     scope['sm_carbon_c_relay::cluster_matches'].each do |match| -%>
+match <%= match["pattern"] %>
+    send to <%= match["send_to"] %>
+<%  if match["stop"] == true -%>
+    stop
+<%  end -%>
+    ;
+<%     end -%>
+<%   end -%>

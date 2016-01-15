@@ -1,0 +1,117 @@
+#!/bin/bash
+#
+# This is a carbon-c-relay init script.
+#
+# chkconfig: 235 99 99
+# description: carbon-c-relay
+# processname: relay
+
+export PATH='/usr/bin:/bin:/usr/sbin:/sbin'
+
+# Source function library.
+if [ -e /etc/rc.d/init.d/functions ]; then
+        . /etc/rc.d/init.d/functions
+fi
+
+USER='root'
+ROOT_DIR='/opt/carbon-c-relay'
+SERVER="$ROOT_DIR/bin/relay"
+SERVER_NAME="carbon-c-relay"
+CONFIG_FILE="$ROOT_DIR/conf/relay.conf"
+PORT=<%= scope['sm_carbon_c_relay::in_ports'][0] %>
+WORKERS=<%= scope['sm_carbon_c_relay::workers'] %>
+LOG_FILE="$ROOT_DIR/log/console.log"
+LOCK_FILE='/var/lock/subsys/carbon-c-relay'
+RETVAL=4
+
+is_running() {
+        if pgrep -f "$SERVER" >/dev/null 2>&1; then
+                return 0
+        fi
+        return 1
+}
+
+do_start() {
+        if [ ! -f "$LOCK_FILE" ]; then
+                printf "Starting %s:" "$SERVER_NAME"
+                cd $ROOT_DIR &&
+                        runuser -l "$USER" -p -c "$SERVER -f $CONFIG_FILE -p $PORT -w $WORKERS -l $LOG_FILE &" &&
+                        echo_success ||
+                        echo_failure
+                RETVAL=$?
+                printf '\n'
+                if [ $RETVAL -eq 0 ]; then
+                        touch "$LOCK_FILE"
+                fi
+        else
+                if is_running; then
+                        echo "$SERVER_NAME is already running."
+                        RETVAL=0
+                else
+                        echo "$SERVER_NAME is dead but has $LOCK_FILE lock file."
+                        RETVAL=2
+                fi
+        fi
+}
+
+do_stop() {
+        printf 'Stopping %s: ' "$SERVER_NAME"
+        if is_running; then
+                pkill -TERM -f "$SERVER"
+        else
+                printf 'not runing'
+                echo_success
+                printf '\n'
+                return 0
+        fi
+        stop_count=0
+        while is_running; do
+                sleep 0.5
+                printf '.'
+                if [ $stop_count -ge 20 ]; then
+                        printf 'force killing'
+                        pkill -9 -f "statsd $CONFIG_FILE"
+                        stop_count=0
+                fi
+        done
+        RETVAL=0
+        rm -f "$LOCK_FILE"
+        echo_success
+        printf '\n'
+}
+
+do_status() {
+        if is_running; then
+                RETVAL=0
+                echo "$SERVER_NAME running with PID $(pgrep -f "$SERVER")"
+        else
+                if [ -e "$LOCK_FILE" ]; then
+                        RETVAL=2
+                        echo "$SERVER_NAME not running, $LOCK_FILE exists"
+                else
+                        RETVAL=3
+                        echo "$SERVER_NAME not running"
+                fi
+        fi
+}
+
+case "$1" in
+        start)
+                do_start
+                ;;
+        stop)
+                do_stop
+                ;;
+        status)
+                do_status
+                ;;
+        restart)
+                do_stop
+                do_start
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|status|restart}"
+                RETVAL=4
+esac
+
+exit $RETVAL

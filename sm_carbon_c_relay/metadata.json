@@ -1,0 +1,13 @@
+{
+  "author": "Andy Mora",
+  "dependencies": [],
+  "license": "Free",
+  "name": "andy-sm_carbon_c_relay",
+  "operatingsystem_support": [],
+  "project_page": "",
+  "requirements": [],
+  "source": "https://github.com/shandymora/puppet_modules",
+  "summary": "A Carbon Realy implemented in clang by Booking.com",
+  "tags": [],
+  "version": "0.1.0"
+}
