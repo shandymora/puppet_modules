@@ -124,4 +124,4 @@ manifest file
 ```
 
 ## External References
-Installs the package "carbon-c-relay" from a local yum repo.
+See https://github.com/grobian/carbon-c-relay
