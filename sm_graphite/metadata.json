@@ -1,0 +1,13 @@
+{
+  "author": "Andy Mora",
+  "dependencies": [],
+  "license": "Free",
+  "name": "andy-graphite",
+  "operatingsystem_support": [],
+  "project_page": "",
+  "requirements": [],
+  "source": "http://gitlab.shandymora.com/puppet/graphite",
+  "summary": "Graphite Module",
+  "tags": [],
+  "version": "0.1.0"
+}

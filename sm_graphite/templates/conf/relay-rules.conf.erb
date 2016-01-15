@@ -1,0 +1,16 @@
+# Puppet Managed File
+#
+<% if scope['sm_graphite::carbon_relay_enabled'] -%>
+[default]
+default = true
+destinations = <%= scope['sm_graphite::carbon_relay_default_destinations'].join(", ") %>
+continue = true
+<%   if scope['sm_graphite::relay_rules'].respond_to?("each") -%>
+<%     scope['sm_graphite::relay_rules'].each do |rule| -%>
+
+[<%= rule['name'] %>]
+pattern = <%= rule['pattern'] %>
+destinations = <%= rule['destinations'].join(",") %>
+<%     end -%>
+<%   end -%>
+<% end -%>

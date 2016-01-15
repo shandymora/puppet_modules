@@ -1,0 +1,27 @@
+# Puppet Managed File
+#
+# Schema definitions for Whisper files. Entries are scanned in order,
+# and first match wins. This file is scanned for changes every 60 seconds.
+#
+#  [name]
+#  pattern = regex
+#  retentions = timePerPoint:timeToStore, timePerPoint:timeToStore, ...
+
+# Carbon's internal metrics. This entry should match what is specified in
+# CARBON_METRIC_PREFIX and CARBON_METRIC_INTERVAL settings
+
+<% if scope['sm_graphite::storage_schemas_extra'].respond_to?("each") -%>
+<%   scope['sm_graphite::storage_schemas_extra'].each do |schema| -%>
+[<%= schema["name"] %>]
+pattern = <%= schema["pattern"] %> 
+retentions = <%= schema["retentions"].join(",") %>
+
+<%   end -%>
+<% end -%>
+<% scope['sm_graphite::storage_schemas_default'].each do |schema| -%>
+[<%= schema["name"] %>]
+pattern = <%= schema["pattern"] %> 
+retentions = <%= schema["retentions"].join(",") %> 
+
+<% end -%>
+

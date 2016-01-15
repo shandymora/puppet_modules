@@ -1,0 +1,23 @@
+SECRET_KEY = 'hvad45vc&ne-^8wl_9v=44)d4w2g4pjq@h19yivcrttqy*hp4^'
+
+TIME_ZONE = 'Europe/London'
+
+LOG_RENDERING_PERFORMANCE = <%= scope['sm_graphite::graphite_web_log_rendering_performance'] %>
+LOG_CACHE_PERFORMANCE = <%= scope['sm_graphite::graphite_web_log_cache_performance'] %>
+LOG_METRIC_ACCESS = <%= scope['sm_graphite::graphite_web_log_metric_access'] %>
+
+DATABASES = {
+    'default': {
+        'NAME': '/opt/graphite/storage/graphite.db',
+        'ENGINE': 'django.db.backends.sqlite3',
+    }
+}
+
+ALLOWED_HOSTS = ['*']           # ip address of the server
+
+CACHES = {
+        'default': {
+                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+}
+
