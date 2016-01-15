@@ -1,0 +1,13 @@
+{
+  "author": "Andy Mora",
+  "dependencies": [],
+  "license": "Free",
+  "name": "andy-role_rabbitmq",
+  "operatingsystem_support": [],
+  "project_page": "",
+  "requirements": [],
+  "source": "http://gitlab.shandymora.com/puppet/role_rabbitmq",
+  "summary": "RabbitMQ Role",
+  "tags": [],
+  "version": "0.1.0"
+}
