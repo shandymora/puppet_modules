@@ -34,7 +34,7 @@ class sm_graphite::config (
     source => "puppet:///modules/${module_name}/httpd/graphite-vhost.conf"
   }
 
-  file { '/opt/sm_graphite/conf/graphite.wsgi':
+  file { '/opt/graphite/conf/graphite.wsgi':
     ensure => file,
     owner  => 'root',
     group  => 'root',
@@ -69,7 +69,7 @@ class sm_graphite::config (
   }
 
   # Custom logger.py script to fix bug when disabling excessive logging.  This is a fork from the orginal source!!!!
-#  file { '/opt/sm_graphite/webapp/sm_graphite/logger.py':
+#  file { '/opt/graphite/webapp/graphite/logger.py':
 #    ensure => file,
 #    owner  => 'apache',
 #    group  => 'apache',
